@@ -27,7 +27,8 @@ def test(choice=None):
 
     if args.type == 'test':
         dataset_index = [1, 3, 6, 7, 8, 12, 14]
-        dataset_detection_type = {'-FRCNN', '-SDP', '-DPM'}
+        # dataset_detection_type = {'-FRCNN', '-SDP', '-DPM'}
+        dataset_detection_type = {'-DPM'}
 
     dataset_image_folder_format = os.path.join(args.mot_root, args.type+'/MOT'+str(args.mot_version)+'-{:02}{}/img1')
     detection_file_name_format=os.path.join(args.mot_root, args.type+'/MOT'+str(args.mot_version)+'-{:02}{}/det/det.txt')
@@ -46,7 +47,7 @@ def test(choice=None):
         #     return
 
     saved_file_name_format = os.path.join(save_folder, 'MOT'+str(args.mot_version)+'-{:02}{}.txt')
-    save_video_name_format = os.path.join(save_folder, 'MOT'+str(args.mot_version)+'-{:02}{}.avi')
+    save_video_name_format = os.path.join(save_folder, 'MOT'+str(args.mot_version)+'-{:02}{}.mp4')
 
     f = lambda format_str: [format_str.format(index, type) for type in dataset_detection_type for index in dataset_index]
 
@@ -80,7 +81,8 @@ def test(choice=None):
 
 
             if first_run and args.save_video:
-                vw = cv2.VideoWriter(save_video_name, cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w, h))
+                # vw = cv2.VideoWriter(save_video_name, cv2.VideoWriter_fourcc('M','J','P','G'), 10, (w, h))
+                vw = cv2.VideoWriter(save_video_name, cv2.VideoWriter_fourcc(*'mp4v'), 10, (w, h))
                 first_run = False
 
             det[:, [2,4]] /= float(w)
@@ -110,6 +112,7 @@ def test(choice=None):
 
     print(timer.total_time)
     print(timer.average_time)
+
 
 if __name__ == '__main__':
     all_choices = TrackerConfig.get_choices_age_node()

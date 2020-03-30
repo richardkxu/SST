@@ -69,9 +69,9 @@ test mot train dataset
 
 def init_test_mot17():
     config['resume'] = './weights/sst300_0712_83000.pth'
-    config['mot_root'] = '/media/ssm/seagate/dataset/MOT17'
-    config['save_folder'] = '/media/ssm/seagate/weights0326-I50k-M80-G30'
-    config['log_folder'] = '/media/ssm/seagate/logs/1008-age-node'
+    config['mot_root'] = '/home/richardkxu/DATA/MOT17-dataset'
+    config['save_folder'] = '/home/richardkxu/Documents/SST/weights'
+    config['log_folder'] = '/home/richardkxu/Documents/SST/log'
     config['batch_size'] = 1
     config['write_file'] = True
     config['tensorboard'] = True
