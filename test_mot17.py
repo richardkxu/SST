@@ -8,6 +8,7 @@ from utils.timer import Timer
 import argparse
 import os
 
+
 parser = argparse.ArgumentParser(description='Single Shot Tracker Test')
 parser.add_argument('--version', default='v1', help='current version')
 parser.add_argument('--mot_root', default=config['mot_root'], help='MOT ROOT')
@@ -26,11 +27,13 @@ def test(choice=None):
         dataset_detection_type = {'-DPM', '-FRCNN', '-SDP'}
 
     if args.type == 'test':
-        dataset_index = [1, 3, 6, 7, 8, 12, 14]
+        # dataset_index = [1, 3, 6, 7, 8, 12, 14]
+        dataset_index = [8]
         # dataset_detection_type = {'-FRCNN', '-SDP', '-DPM'}
         dataset_detection_type = {'-DPM'}
 
     dataset_image_folder_format = os.path.join(args.mot_root, args.type+'/MOT'+str(args.mot_version)+'-{:02}{}/img1')
+    # pre-computed detection results
     detection_file_name_format=os.path.join(args.mot_root, args.type+'/MOT'+str(args.mot_version)+'-{:02}{}/det/det.txt')
 
     if not os.path.exists(args.log_folder):
@@ -54,6 +57,9 @@ def test(choice=None):
     timer = Timer()
     for image_folder, detection_file_name, saved_file_name, save_video_name in zip(f(dataset_image_folder_format), f(detection_file_name_format), f(saved_file_name_format), f(save_video_name_format)):
         print('start processing '+saved_file_name)
+        save_img_folder = save_video_name.split('.')[0]
+        if not os.path.exists(save_img_folder):
+            os.mkdir(save_img_folder)
         tracker = SSTTracker()
         reader = MOTDataReader(image_folder = image_folder,
                       detection_file_name =detection_file_name,
@@ -96,6 +102,7 @@ def test(choice=None):
                 cv2.waitKey(1)
 
             if args.save_video and not image_org is None:
+                cv2.imwrite(os.path.join(save_img_folder, '{:05d}.jpg'.format(i)), image_org)
                 vw.write(image_org)
 
             # save result

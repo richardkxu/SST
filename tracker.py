@@ -9,6 +9,9 @@ from scipy.optimize import linear_sum_assignment
 import matplotlib.pyplot as plt
 
 
+mycolor = {'person': (0,0,255), 'car': (255,0,0), 'truck': (255,128,0)}
+
+
 class TrackUtil:
     @staticmethod
     def convert_detection(detection):
@@ -531,6 +534,10 @@ class Tracks:
 
     def show(self, frame_index, recorder, image):
         h, w, _ = image.shape
+        font = cv2.FONT_HERSHEY_TRIPLEX
+        text_scale = 1
+        text_thickness = 1
+        bbox_thickness = 2
 
         # draw rectangle
         for t in self.tracks:
@@ -538,9 +545,14 @@ class Tracks:
                 b = t.nodes[-1].get_box(frame_index, recorder)
                 if b is None:
                     continue
-                txt = '({}, {})'.format(t.id, t.nodes[-1].id)
-                image = cv2.putText(image, txt, (int(b[0]*w),int((b[1])*h)), cv2.FONT_HERSHEY_SIMPLEX, 1, t.color, 3)
-                image = cv2.rectangle(image, (int(b[0]*w),int((b[1])*h)), (int((b[0]+b[2])*w), int((b[1]+b[3])*h)), t.color, 2)
+                # (track id, detection id)
+                # txt = '({}, {})'.format(t.id, t.nodes[-1].id)
+                txt = '[{}-{}]'.format('person', t.id)
+                t_size = cv2.getTextSize(txt, font, 1, 1)[0]
+                # image = cv2.rectangle(image, (int(b[0]*w),int((b[1])*h)), (int((b[0]+b[2])*w), int((b[1]+b[3])*h)), t.color, 2)
+                image = cv2.rectangle(image, (int(b[0]*w), int((b[1])*h)), (int((b[0]+b[2])*w), int((b[1]+b[3])*h)), mycolor['person'], bbox_thickness)
+                # image = cv2.putText(image, txt, (int(b[0]*w),int((b[1])*h)), cv2.FONT_HERSHEY_SIMPLEX, 1, t.color, 3)
+                image = cv2.putText(image, txt.capitalize(), (int(b[0]*w), int((b[1])*h) + t_size[1] + 6), font, text_scale, mycolor['person'], text_thickness)
 
         # draw line
         for t in self.tracks:
@@ -557,7 +569,7 @@ class Tracks:
                     continue
                 c1 = (int((b1[0] + b1[2]/2.0)*w), int((b1[1] + b1[3])*h))
                 c2 = (int((b2[0] + b2[2] / 2.0) * w), int((b2[1] + b2[3]) * h))
-                image = cv2.line(image, c1, c2, t.color, 2)
+                # image = cv2.line(image, c1, c2, t.color, 2)
 
         return image
 
