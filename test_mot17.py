@@ -30,7 +30,7 @@ def test(choice=None):
         # dataset_index = [1, 3, 6, 7, 8, 12, 14]
         dataset_index = [8]
         # dataset_detection_type = {'-FRCNN', '-SDP', '-DPM'}
-        dataset_detection_type = {'-DPM'}
+        dataset_detection_type = {'-SDP', '-DPM'}
 
     dataset_image_folder_format = os.path.join(args.mot_root, args.type+'/MOT'+str(args.mot_version)+'-{:02}{}/img1')
     # pre-computed detection results
@@ -104,6 +104,7 @@ def test(choice=None):
             if args.save_video and not image_org is None:
                 cv2.imwrite(os.path.join(save_img_folder, '{:05d}.jpg'.format(i)), image_org)
                 vw.write(image_org)
+                # vw.write(img)
 
             # save result
             for t in tracker.tracks:

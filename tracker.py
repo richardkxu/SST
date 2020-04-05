@@ -9,7 +9,9 @@ from scipy.optimize import linear_sum_assignment
 import matplotlib.pyplot as plt
 
 
-mycolor = {'person': (0,0,255), 'car': (255,0,0), 'truck': (255,128,0)}
+# mycolor = {'person': (0,0,255), 'car': (255,0,0), 'truck': (255,128,0)}
+# light blue, red, dark blue
+mycolor = {'person': (255,128,0), 'car': (0,0,255), 'truck': (255,0,0)}
 
 
 class TrackUtil:
@@ -549,6 +551,7 @@ class Tracks:
                 # txt = '({}, {})'.format(t.id, t.nodes[-1].id)
                 txt = '[{}-{}]'.format('person', t.id)
                 t_size = cv2.getTextSize(txt, font, 1, 1)[0]
+                # x1, y1, x2, y2
                 # image = cv2.rectangle(image, (int(b[0]*w),int((b[1])*h)), (int((b[0]+b[2])*w), int((b[1]+b[3])*h)), t.color, 2)
                 image = cv2.rectangle(image, (int(b[0]*w), int((b[1])*h)), (int((b[0]+b[2])*w), int((b[1]+b[3])*h)), mycolor['person'], bbox_thickness)
                 # image = cv2.putText(image, txt, (int(b[0]*w),int((b[1])*h)), cv2.FONT_HERSHEY_SIMPLEX, 1, t.color, 3)
